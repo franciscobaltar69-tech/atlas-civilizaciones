@@ -1,0 +1,2573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Atlas de Civilizaciones Perdidas</title>
+  <style>
+    :root{
+      --bg:#07111f;
+      --bg2:#0c1b31;
+      --panel:rgba(10,22,42,.86);
+      --panel2:rgba(16,30,55,.95);
+      --line:rgba(255,255,255,.08);
+      --gold:#f8d36d;
+      --gold2:#ffea9c;
+      --cyan:#62d6ff;
+      --green:#67f0b2;
+      --red:#ff7272;
+      --orange:#ffb15a;
+      --text:#ecf4ff;
+      --muted:#9fb5d0;
+      --shadow:0 20px 50px rgba(0,0,0,.35);
+      --radius:18px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{
+      margin:0;
+      padding:0;
+      min-height:100%;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 20% 20%, rgba(98,214,255,.12), transparent 22%),
+        radial-gradient(circle at 80% 15%, rgba(248,211,109,.12), transparent 20%),
+        radial-gradient(circle at 50% 80%, rgba(103,240,178,.08), transparent 18%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+      overflow-x:hidden;
+    }
+
+    .stars, .stars2, .stars3{
+      position:fixed; inset:0; pointer-events:none; z-index:0;
+      background-repeat:repeat;
+      animation: drift linear infinite;
+      opacity:.65;
+    }
+    .stars{
+      background-image:
+        radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,.8), transparent 60%),
+        radial-gradient(1.5px 1.5px at 100px 130px, rgba(255,255,255,.6), transparent 60%),
+        radial-gradient(1.2px 1.2px at 240px 70px, rgba(255,255,255,.8), transparent 60%),
+        radial-gradient(2px 2px at 350px 200px, rgba(255,255,255,.7), transparent 60%);
+      background-size: 420px 260px;
+      animation-duration: 120s;
+    }
+    .stars2{
+      background-image:
+        radial-gradient(1px 1px at 10px 20px, rgba(98,214,255,.7), transparent 60%),
+        radial-gradient(1px 1px at 150px 90px, rgba(248,211,109,.6), transparent 60%),
+        radial-gradient(1px 1px at 250px 160px, rgba(255,255,255,.6), transparent 60%),
+        radial-gradient(1px 1px at 370px 50px, rgba(103,240,178,.5), transparent 60%);
+      background-size: 500px 300px;
+      animation-duration: 180s;
+      opacity:.45;
+    }
+    .stars3{
+      background-image:
+        radial-gradient(1.5px 1.5px at 60px 100px, rgba(255,255,255,.55), transparent 60%),
+        radial-gradient(1.2px 1.2px at 200px 40px, rgba(98,214,255,.45), transparent 60%),
+        radial-gradient(1.2px 1.2px at 320px 140px, rgba(248,211,109,.4), transparent 60%);
+      background-size: 560px 340px;
+      animation-duration: 240s;
+      opacity:.35;
+    }
+    @keyframes drift{
+      from{transform:translateY(0)}
+      to{transform:translateY(-180px)}
+    }
+
+    .app{
+      position:relative;
+      z-index:1;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
+
+    header.topbar{
+      position:sticky;
+      top:0;
+      z-index:50;
+      backdrop-filter: blur(12px);
+      background:linear-gradient(180deg, rgba(7,17,31,.88), rgba(7,17,31,.5));
+      border-bottom:1px solid var(--line);
+      padding:14px 18px;
+    }
+    .topbar-inner{
+      max-width:1400px;
+      margin:0 auto;
+      display:flex;
+      gap:16px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .logo{
+      width:48px;height:48px;border-radius:14px;
+      background:
+        radial-gradient(circle at 30% 30%, var(--gold2), transparent 28%),
+        radial-gradient(circle at 65% 65%, rgba(98,214,255,.35), transparent 35%),
+        linear-gradient(135deg, rgba(248,211,109,.18), rgba(98,214,255,.18));
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow:var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+    .logo:before,.logo:after{
+      content:"";
+      position:absolute;
+      inset:8px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.18);
+    }
+    .logo:after{
+      inset:16px;
+      border-color:rgba(255,255,255,.1);
+    }
+    .brand h1{
+      margin:0;
+      font-size:1.2rem;
+      letter-spacing:.5px;
+    }
+    .brand p{
+      margin:2px 0 0;
+      color:var(--muted);
+      font-size:.9rem;
+    }
+
+    .hud{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:flex-end;
+    }
+    .pill{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      border-radius:999px;
+      padding:10px 14px;
+      display:flex;
+      gap:8px;
+      align-items:center;
+      font-weight:700;
+      box-shadow:var(--shadow);
+    }
+    .pill small{
+      color:var(--muted);
+      font-weight:600;
+    }
+
+    main{
+      flex:1;
+      width:min(1400px, 95vw);
+      margin:18px auto 28px;
+      display:grid;
+      grid-template-columns: 330px 1fr;
+      gap:18px;
+    }
+
+    .panel{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .panel::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg, rgba(255,255,255,.03), transparent 25%);
+      pointer-events:none;
+    }
+
+    .sidebar{
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      min-height:calc(100vh - 130px);
+    }
+
+    .section{
+      padding:18px;
+    }
+    .section + .section{
+      border-top:1px solid var(--line);
+    }
+    .section h2{
+      margin:0 0 12px;
+      font-size:1rem;
+      letter-spacing:.4px;
+    }
+    .muted{
+      color:var(--muted);
+      line-height:1.5;
+    }
+
+    .hero{
+      padding:20px;
+      min-height:220px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      background:
+        radial-gradient(circle at 85% 20%, rgba(98,214,255,.18), transparent 25%),
+        radial-gradient(circle at 10% 80%, rgba(248,211,109,.15), transparent 25%),
+        linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));
+    }
+    .hero h2{
+      margin:0;
+      font-size:1.35rem;
+      line-height:1.2;
+    }
+    .hero p{
+      margin:12px 0 0;
+      color:var(--muted);
+      line-height:1.6;
+    }
+    .hero-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:18px;
+    }
+
+    button, .btn{
+      border:none;
+      outline:none;
+      cursor:pointer;
+      color:#08111f;
+      background:linear-gradient(180deg, var(--gold2), var(--gold));
+      padding:12px 16px;
+      border-radius:14px;
+      font-weight:800;
+      transition:transform .15s ease, filter .15s ease, box-shadow .2s ease;
+      box-shadow:0 10px 24px rgba(248,211,109,.22);
+    }
+    button:hover,.btn:hover{
+      transform:translateY(-2px);
+      filter:brightness(1.03);
+    }
+    button.secondary{
+      color:var(--text);
+      background:rgba(255,255,255,.06);
+      border:1px solid var(--line);
+      box-shadow:none;
+    }
+    button.green{
+      background:linear-gradient(180deg, #9fffd7, var(--green));
+      box-shadow:0 10px 24px rgba(103,240,178,.2);
+      color:#07151f;
+    }
+    button.red{
+      background:linear-gradient(180deg, #ffb4b4, var(--red));
+      box-shadow:0 10px 24px rgba(255,114,114,.18);
+      color:#190707;
+    }
+    button.cyan{
+      background:linear-gradient(180deg, #b9f0ff, var(--cyan));
+      box-shadow:0 10px 24px rgba(98,214,255,.2);
+      color:#07151f;
+    }
+
+    .stats-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+    .stat-card{
+      border:1px solid var(--line);
+      border-radius:16px;
+      background:rgba(255,255,255,.04);
+      padding:14px;
+    }
+    .stat-card h3{
+      margin:0 0 8px;
+      font-size:.9rem;
+      color:var(--muted);
+      font-weight:700;
+    }
+    .stat-card strong{
+      font-size:1.2rem;
+    }
+
+    .quest-list{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .quest{
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:12px;
+      background:rgba(255,255,255,.035);
+    }
+    .quest-top{
+      display:flex;
+      justify-content:space-between;
+      gap:8px;
+      align-items:center;
+      margin-bottom:8px;
+    }
+    .badge{
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:.78rem;
+      font-weight:800;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.06);
+      color:var(--gold2);
+    }
+    .progress{
+      height:10px;
+      border-radius:999px;
+      background:rgba(255,255,255,.07);
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.05);
+    }
+    .progress > div{
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg, var(--cyan), var(--gold));
+      transition:width .35s ease;
+    }
+
+    .content{
+      min-height:calc(100vh - 130px);
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+
+    .screen{
+      display:none;
+      animation:fade .35s ease;
+    }
+    .screen.active{display:block}
+    @keyframes fade{
+      from{opacity:0; transform:translateY(10px)}
+      to{opacity:1; transform:translateY(0)}
+    }
+
+    .story-cover{
+      padding:26px;
+      min-height:340px;
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:18px;
+      align-items:stretch;
+    }
+    .story-art{
+      border-radius:20px;
+      border:1px solid var(--line);
+      background:
+        radial-gradient(circle at 20% 20%, rgba(248,211,109,.22), transparent 25%),
+        radial-gradient(circle at 80% 35%, rgba(98,214,255,.18), transparent 22%),
+        radial-gradient(circle at 55% 80%, rgba(103,240,178,.14), transparent 20%),
+        linear-gradient(135deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      position:relative;
+      overflow:hidden;
+      min-height:280px;
+    }
+    .story-art .planet{
+      position:absolute;
+      width:180px;height:180px;border-radius:50%;
+      top:32px; right:42px;
+      background:
+        radial-gradient(circle at 35% 35%, #ffe7a0, #c89f3a 55%, #6d4b12 100%);
+      box-shadow:
+        0 0 60px rgba(248,211,109,.2),
+        inset -18px -18px 40px rgba(0,0,0,.25);
+    }
+    .story-art .ring{
+      position:absolute;
+      width:260px;height:90px;border-radius:50%;
+      top:88px; right:4px;
+      border:10px solid rgba(255,238,170,.42);
+      transform:rotate(-18deg);
+      box-shadow:0 0 40px rgba(248,211,109,.12);
+    }
+    .story-art .temple{
+      position:absolute;
+      left:34px; bottom:24px;
+      width:250px; height:150px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      clip-path:polygon(50% 0, 100% 18%, 100% 28%, 92% 28%, 92% 100%, 8% 100%, 8% 28%, 0 28%, 0 18%);
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .story-art .glowline{
+      position:absolute;
+      left:0; right:0; bottom:0;
+      height:2px;
+      background:linear-gradient(90deg, transparent, var(--cyan), transparent);
+      opacity:.6;
+    }
+
+    .story-text h2{
+      margin:0 0 12px;
+      font-size:2rem;
+      line-height:1.05;
+    }
+    .story-text p{
+      color:var(--muted);
+      line-height:1.7;
+      margin:10px 0;
+    }
+
+    .tabs{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      padding:0 22px 20px;
+    }
+
+    .map-wrap{
+      padding:20px;
+    }
+    .map-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
+    }
+
+    .map-board{
+      position:relative;
+      min-height:620px;
+      border-radius:22px;
+      overflow:hidden;
+      border:1px solid var(--line);
+      background:
+        radial-gradient(circle at 50% 50%, rgba(255,255,255,.03), transparent 35%),
+        radial-gradient(circle at 20% 20%, rgba(98,214,255,.08), transparent 20%),
+        radial-gradient(circle at 80% 70%, rgba(248,211,109,.08), transparent 20%),
+        linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));
+    }
+    .map-svg{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      pointer-events:none;
+    }
+    .map-grid{
+      position:absolute;
+      inset:0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(circle at center, rgba(0,0,0,.95), rgba(0,0,0,.2));
+      opacity:.35;
+    }
+
+    .node{
+      position:absolute;
+      width:108px;
+      min-height:108px;
+      transform:translate(-50%,-50%);
+      border-radius:22px;
+      border:1px solid rgba(255,255,255,.12);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      box-shadow:var(--shadow);
+      padding:12px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      text-align:center;
+      cursor:pointer;
+      transition:transform .2s ease, border-color .2s ease, box-shadow .2s ease, filter .2s ease;
+      backdrop-filter: blur(6px);
+      user-select:none;
+    }
+    .node:hover{
+      transform:translate(-50%,-50%) scale(1.03);
+      border-color:rgba(255,255,255,.25);
+      filter:brightness(1.03);
+    }
+    .node.locked{
+      opacity:.55;
+      filter:grayscale(.35);
+    }
+    .node.done{
+      box-shadow:0 18px 40px rgba(103,240,178,.14);
+      border-color:rgba(103,240,178,.35);
+    }
+    .node .icon{
+      width:42px;height:42px;border-radius:14px;
+      display:grid; place-items:center;
+      font-size:1.2rem;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .node .title{
+      font-weight:800;
+      font-size:.92rem;
+      line-height:1.15;
+    }
+    .node .mini{
+      color:var(--muted);
+      font-size:.78rem;
+    }
+
+    .legend{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:14px;
+      color:var(--muted);
+      font-size:.92rem;
+    }
+    .legend span{
+      display:flex; gap:8px; align-items:center;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+    }
+    .dot{
+      width:12px;height:12px;border-radius:50%;
+      display:inline-block;
+    }
+    .dot.lock{background:#667892}
+    .dot.open{background:var(--gold)}
+    .dot.done{background:var(--green)}
+
+    .mission{
+      padding:22px;
+    }
+    .mission-header{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+      margin-bottom:18px;
+    }
+    .mission-title h2{
+      margin:0 0 8px;
+      font-size:1.6rem;
+    }
+    .mission-title p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.6;
+      max-width:900px;
+    }
+
+    .info-cards{
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:12px;
+      margin-bottom:18px;
+    }
+    .info-card{
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:rgba(255,255,255,.035);
+      padding:14px;
+    }
+    .info-card h3{
+      margin:0 0 8px;
+      font-size:.95rem;
+      color:var(--gold2);
+    }
+    .info-card p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.5;
+      font-size:.95rem;
+    }
+
+    .challenge-box{
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:18px;
+      background:
+        radial-gradient(circle at top right, rgba(98,214,255,.08), transparent 20%),
+        rgba(255,255,255,.03);
+    }
+    .challenge-box h3{
+      margin:0 0 12px;
+      font-size:1.15rem;
+    }
+    .challenge-box p{
+      color:var(--muted);
+      line-height:1.6;
+    }
+
+    .choices{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(220px,1fr));
+      gap:12px;
+      margin-top:16px;
+    }
+    .choice{
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:14px;
+      background:rgba(255,255,255,.04);
+      cursor:pointer;
+      transition:transform .15s ease, border-color .15s ease, background .15s ease;
+    }
+    .choice:hover{
+      transform:translateY(-2px);
+      border-color:rgba(255,255,255,.22);
+      background:rgba(255,255,255,.06);
+    }
+    .choice.correct{
+      border-color:rgba(103,240,178,.5);
+      background:rgba(103,240,178,.1);
+    }
+    .choice.wrong{
+      border-color:rgba(255,114,114,.45);
+      background:rgba(255,114,114,.1);
+    }
+    .choice.disabled{
+      pointer-events:none;
+      opacity:.85;
+    }
+
+    .sort-area{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+      margin-top:16px;
+    }
+    .sort-column{
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:14px;
+      background:rgba(255,255,255,.035);
+      min-height:240px;
+    }
+    .sort-column h4{
+      margin:0 0 12px;
+      color:var(--gold2);
+    }
+    .draggables{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+    .drag-item{
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.06);
+      cursor:grab;
+      user-select:none;
+      font-weight:700;
+    }
+
+    .dropzone{
+      min-height:120px;
+      border:2px dashed rgba(255,255,255,.15);
+      border-radius:14px;
+      padding:10px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-content:flex-start;
+    }
+
+    .resource-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:12px;
+      margin-top:16px;
+    }
+    .resource{
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:rgba(255,255,255,.04);
+      padding:14px;
+      text-align:center;
+      cursor:pointer;
+      transition:transform .15s ease, border-color .15s ease;
+    }
+    .resource:hover{
+      transform:translateY(-2px);
+      border-color:rgba(255,255,255,.22);
+    }
+    .resource.active{
+      border-color:rgba(98,214,255,.5);
+      background:rgba(98,214,255,.08);
+    }
+    .resource strong{
+      display:block;
+      font-size:1.05rem;
+      margin-bottom:6px;
+    }
+    .resource small{
+      color:var(--muted);
+    }
+
+    .trade-board{
+      margin-top:16px;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+    }
+    .trade-side{
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:rgba(255,255,255,.035);
+      padding:16px;
+    }
+    .trade-side h4{
+      margin:0 0 12px;
+      color:var(--gold2);
+    }
+
+    .meter{
+      height:12px;
+      border-radius:999px;
+      background:rgba(255,255,255,.07);
+      border:1px solid rgba(255,255,255,.06);
+      overflow:hidden;
+      margin-top:10px;
+    }
+    .meter > div{
+      height:100%;
+      width:0%;
+      transition:width .3s ease;
+      background:linear-gradient(90deg, var(--green), var(--cyan));
+    }
+
+    .decision-cards{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+      margin-top:16px;
+    }
+    .decision{
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:rgba(255,255,255,.04);
+      padding:16px;
+      cursor:pointer;
+      transition:transform .15s ease, border-color .15s ease;
+    }
+    .decision:hover{
+      transform:translateY(-2px);
+      border-color:rgba(255,255,255,.22);
+    }
+    .decision h4{
+      margin:0 0 10px;
+      color:var(--gold2);
+    }
+    .decision p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.55;
+    }
+
+    .footer-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:18px;
+    }
+
+    .toast-wrap{
+      position:fixed;
+      right:16px;
+      bottom:16px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      z-index:999;
+    }
+    .toast{
+      min-width:260px;
+      max-width:360px;
+      border-radius:16px;
+      border:1px solid var(--line);
+      background:rgba(10,22,42,.95);
+      box-shadow:var(--shadow);
+      padding:14px 16px;
+      animation:toastIn .25s ease;
+    }
+    .toast strong{
+      display:block;
+      margin-bottom:4px;
+    }
+    .toast p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.45;
+      font-size:.95rem;
+    }
+    @keyframes toastIn{
+      from{opacity:0; transform:translateY(10px)}
+      to{opacity:1; transform:translateY(0)}
+    }
+
+    .modal{
+      position:fixed;
+      inset:0;
+      background:rgba(2,8,18,.6);
+      backdrop-filter:blur(10px);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:1000;
+      padding:20px;
+    }
+    .modal.active{display:flex}
+    .modal-card{
+      width:min(920px, 95vw);
+      max-height:90vh;
+      overflow:auto;
+      border-radius:24px;
+      border:1px solid var(--line);
+      background:var(--panel2);
+      box-shadow:var(--shadow);
+    }
+    .modal-head{
+      padding:18px 20px;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      position:sticky;
+      top:0;
+      background:var(--panel2);
+      z-index:2;
+    }
+    .modal-body{
+      padding:20px;
+    }
+
+    .timeline{
+      display:grid;
+      gap:12px;
+      margin-top:14px;
+    }
+    .timeline-item{
+      border-left:3px solid rgba(255,255,255,.12);
+      padding:6px 0 6px 14px;
+      color:var(--muted);
+    }
+    .timeline-item strong{
+      color:var(--text);
+    }
+
+    .final-panel{
+      padding:28px;
+      text-align:center;
+    }
+    .final-panel h2{
+      font-size:2rem;
+      margin:0 0 10px;
+    }
+    .final-panel p{
+      max-width:820px;
+      margin:0 auto 14px;
+      color:var(--muted);
+      line-height:1.7;
+    }
+
+    .score-ring{
+      width:180px;height:180px;border-radius:50%;
+      margin:20px auto;
+      background:
+        radial-gradient(circle at center, rgba(7,17,31,1) 55%, transparent 56%),
+        conic-gradient(var(--gold) 0deg, var(--gold) var(--deg, 0deg), rgba(255,255,255,.08) 0deg);
+      display:grid;
+      place-items:center;
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+      position:relative;
+    }
+    .score-ring .inside{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+    }
+    .score-ring strong{
+      font-size:2rem;
+    }
+    .score-ring span{
+      color:var(--muted);
+    }
+
+    .small-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:14px;
+    }
+
+    @media (max-width: 1100px){
+      main{
+        grid-template-columns:1fr;
+      }
+      .sidebar{
+        min-height:auto;
+      }
+      .story-cover{
+        grid-template-columns:1fr;
+      }
+      .info-cards{
+        grid-template-columns:1fr;
+      }
+      .resource-grid{
+        grid-template-columns:repeat(2,1fr);
+      }
+      .decision-cards{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width: 760px){
+      .choices{
+        grid-template-columns:1fr;
+      }
+      .sort-area{
+        grid-template-columns:1fr;
+      }
+      .trade-board{
+        grid-template-columns:1fr;
+      }
+      .resource-grid{
+        grid-template-columns:1fr;
+      }
+      .map-board{
+        min-height:760px;
+      }
+      .node{
+        width:100px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="stars"></div>
+  <div class="stars2"></div>
+  <div class="stars3"></div>
+
+  <div class="app">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div class="brand">
+          <div class="logo"></div>
+          <div>
+            <h1>Atlas de Civilizaciones Perdidas</h1>
+            <p>Explorá, resolvé enigmas y reconstruí el conocimiento del pasado.</p>
+          </div>
+        </div>
+
+        <div class="hud">
+          <div class="pill"><span>⚡</span> <strong id="hudEnergy">5</strong> <small>Energía</small></div>
+          <div class="pill"><span>🪙</span> <strong id="hudCoins">0</strong> <small>Monedas</small></div>
+          <div class="pill"><span>⭐</span> <strong id="hudKnowledge">0</strong> <small>Conocimiento</small></div>
+          <div class="pill"><span>🏛️</span> <strong id="hudLevel">1</strong> <small>Nivel</small></div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <aside class="sidebar">
+        <div class="panel hero">
+          <div>
+            <h2>Un juego para aprender sin parecer una clase.</h2>
+            <p>
+              No es una trivia común. Vas a desbloquear culturas antiguas, interpretar pistas,
+              ordenar eventos, negociar recursos y tomar decisiones que afectan tu progreso.
+            </p>
+          </div>
+          <div class="hero-actions">
+            <button id="btnStart">Empezar aventura</button>
+            <button class="secondary" id="btnReset">Reiniciar progreso</button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="section">
+            <h2>Tu expedición</h2>
+            <div class="stats-grid">
+              <div class="stat-card">
+                <h3>Misiones completas</h3>
+                <strong id="statCompleted">0/6</strong>
+              </div>
+              <div class="stat-card">
+                <h3>Precisión</h3>
+                <strong id="statAccuracy">0%</strong>
+              </div>
+              <div class="stat-card">
+                <h3>Racha</h3>
+                <strong id="statStreak">0</strong>
+              </div>
+              <div class="stat-card">
+                <h3>Tiempo jugado</h3>
+                <strong id="statTime">0m</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <h2>Progreso global</h2>
+            <div class="quest-list">
+              <div class="quest">
+                <div class="quest-top">
+                  <strong>Restaurar el Atlas</strong>
+                  <span class="badge" id="badgeMainProgress">0%</span>
+                </div>
+                <div class="progress"><div id="mainProgressBar"></div></div>
+              </div>
+
+              <div class="quest">
+                <div class="quest-top">
+                  <strong>Prestigio del Museo</strong>
+                  <span class="badge" id="badgeMuseum">Inicial</span>
+                </div>
+                <p class="muted" style="margin:8px 0 0">
+                  Ganá conocimiento y monedas para mejorar tu reputación como curador del Atlas.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <h2>Bitácora</h2>
+            <p class="muted" id="logText">
+              Todavía no comenzaste. Tu misión será reconstruir seis fragmentos de la historia humana.
+            </p>
+            <div class="small-actions">
+              <button class="secondary" id="btnOpenLore">Ver lore</button>
+              <button class="secondary" id="btnOpenHelp">Cómo jugar</button>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <section class="content">
+        <!-- HOME / INTRO -->
+        <div class="panel screen active" id="screenHome">
+          <div class="story-cover">
+            <div class="story-text">
+              <h2>El conocimiento del pasado se fracturó en seis reliquias.</h2>
+              <p>
+                En el año 2149, el <strong>Gran Archivo del Tiempo</strong> colapsó. Se perdieron cronologías,
+                rutas comerciales, símbolos sagrados y decisiones que cambiaron el curso de la historia.
+              </p>
+              <p>
+                Tu trabajo es convertirte en <strong>Curador del Atlas</strong>: viajar por un mapa de civilizaciones,
+                reconstruir piezas de información y demostrar que aprender historia puede ser tan adictivo
+                como un juego de estrategia.
+              </p>
+              <p>
+                Cada misión representa una cultura o sistema histórico distinto. No alcanza con memorizar:
+                vas a tener que <strong>interpretar, comparar, deducir y decidir</strong>.
+              </p>
+
+              <div class="tabs">
+                <button id="btnGoMap" class="green">Ir al mapa</button>
+                <button id="btnQuickMission" class="cyan">Misión aleatoria</button>
+              </div>
+            </div>
+
+            <div class="story-art">
+              <div class="planet"></div>
+              <div class="ring"></div>
+              <div class="temple"></div>
+              <div class="glowline"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MAP -->
+        <div class="panel screen" id="screenMap">
+          <div class="map-wrap">
+            <div class="map-header">
+              <div>
+                <h2 style="margin:0 0 6px">Mapa del Atlas</h2>
+                <p class="muted" style="margin:0">
+                  Cada nodo es una reliquia histórica. Completá una para desbloquear la siguiente.
+                </p>
+              </div>
+              <div class="small-actions">
+                <button class="secondary" id="btnBackHome">Inicio</button>
+                <button class="secondary" id="btnRandomMapMission">Misión aleatoria</button>
+              </div>
+            </div>
+
+            <div class="map-board" id="mapBoard">
+              <div class="map-grid"></div>
+              <svg class="map-svg" viewBox="0 0 1000 700" preserveAspectRatio="none">
+                <g id="mapLines"></g>
+              </svg>
+            </div>
+
+            <div class="legend">
+              <span><i class="dot open"></i> Disponible</span>
+              <span><i class="dot lock"></i> Bloqueada</span>
+              <span><i class="dot done"></i> Completada</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- MISSION -->
+        <div class="panel screen" id="screenMission">
+          <div class="mission" id="missionContainer">
+            <!-- Se llena por JS -->
+          </div>
+        </div>
+
+        <!-- FINAL -->
+        <div class="panel screen" id="screenFinal">
+          <div class="final-panel">
+            <h2>Atlas restaurado</h2>
+            <p>
+              Terminaste la campaña principal. No solo respondiste preguntas:
+              reconstruiste una red de ideas, rutas, símbolos y decisiones humanas.
+            </p>
+
+            <div class="score-ring" id="scoreRing">
+              <div class="inside">
+                <strong id="finalScore">0</strong>
+                <span>puntaje</span>
+              </div>
+            </div>
+
+            <p id="finalSummary">
+              Tu legado todavía no fue calculado.
+            </p>
+
+            <div class="hero-actions" style="justify-content:center">
+              <button id="btnReplay">Jugar otra vez</button>
+              <button class="secondary" id="btnBackMapFromFinal">Volver al mapa</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- MODAL -->
+  <div class="modal" id="modal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div>
+          <strong id="modalTitle">Ventana</strong>
+        </div>
+        <button class="secondary" id="btnCloseModal">Cerrar</button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- TOASTS -->
+  <div class="toast-wrap" id="toastWrap"></div>
+
+  <script>
+    /**********************************************************************
+     * ATLAS DE CIVILIZACIONES PERDIDAS
+     * Juego interactivo en una sola página
+     **********************************************************************/
+
+    const $ = (sel) => document.querySelector(sel);
+    const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+
+    const STORAGE_KEY = "atlas_civilizaciones_guardado_v2";
+
+    const state = {
+      energy: 5,
+      coins: 0,
+      knowledge: 0,
+      level: 1,
+      completed: [],
+      currentMissionId: null,
+      totalAnswers: 0,
+      correctAnswers: 0,
+      streak: 0,
+      bestStreak: 0,
+      museumRank: "Inicial",
+      startTime: Date.now(),
+      elapsedExtra: 0,
+      missionAttempts: {},
+      finishedGame: false
+    };
+
+    const missions = [
+      {
+        id: "mesopotamia",
+        x: 120, y: 180,
+        icon: "𒀭",
+        title: "Mesopotamia",
+        short: "Códigos, ciudades y ríos",
+        type: "choice",
+        difficulty: 1,
+        reward: { coins: 25, knowledge: 20, energy: 1 },
+        lore: {
+          era: "c. 3500 a.C. – 539 a.C.",
+          region: "Entre los ríos Tigris y Éufrates",
+          concept: "Nacimiento de ciudades, escritura cuneiforme y leyes tempranas"
+        },
+        intro:
+          "La primera reliquia del Atlas conserva fragmentos sobre una de las primeras regiones urbanas del mundo. Tu misión es interpretar qué elemento convirtió a Mesopotamia en una cuna de organización social compleja.",
+        prompt:
+          "¿Qué innovación fue clave para registrar transacciones, leyes y relatos en Mesopotamia?",
+        options: [
+          "La escritura cuneiforme sobre tablillas de arcilla",
+          "La imprenta de tipos móviles",
+          "El papel moneda bancario",
+          "La brújula magnética oceánica"
+        ],
+        correct: 0,
+        explanation:
+          "La escritura cuneiforme permitió registrar comercio, leyes, impuestos y relatos. Fue una herramienta decisiva para administrar ciudades y estados."
+      },
+
+      {
+        id: "egipto",
+        x: 320, y: 120,
+        icon: "𓂀",
+        title: "Egipto",
+        short: "Poder, río y eternidad",
+        type: "timeline",
+        difficulty: 2,
+        reward: { coins: 35, knowledge: 28, energy: 1 },
+        lore: {
+          era: "c. 3100 a.C. – 30 a.C.",
+          region: "Valle del Nilo",
+          concept: "Agricultura, centralización política y monumentalidad funeraria"
+        },
+        intro:
+          "Los archivos egipcios del Atlas están mezclados. Para restaurarlos, tenés que ordenar hechos que muestran cómo el río, el poder y la religión estructuraban su civilización.",
+        prompt:
+          "Arrastrá los eventos al orden histórico y lógico más coherente, de más antiguo a más tardío.",
+        timelineItems: [
+          { id:"e1", text:"Unificación del Alto y Bajo Egipto" },
+          { id:"e2", text:"Construcción de grandes pirámides del Reino Antiguo" },
+          { id:"e3", text:"Expansión del poder faraónico y administración compleja" },
+          { id:"e4", text:"Incorporación final al mundo romano" }
+        ],
+        correctOrder:["e1","e2","e3","e4"],
+        explanation:
+          "La unificación política fue anterior al apogeo monumental de las pirámides. Luego se consolidó la administración estatal y, mucho más tarde, Egipto pasó al dominio romano."
+      },
+
+      {
+        id: "fenicia",
+        x: 520, y: 220,
+        icon: "⚓",
+        title: "Fenicia",
+        short: "Comercio y navegación",
+        type: "trade",
+        difficulty: 3,
+        reward: { coins: 45, knowledge: 35, energy: 1 },
+        lore: {
+          era: "c. 1500 a.C. – 300 a.C.",
+          region: "Costa del Mediterráneo oriental",
+          concept: "Redes marítimas, intercambio cultural y expansión comercial"
+        },
+        intro:
+          "La reliquia fenicia no se restaura respondiendo una pregunta directa. Necesitás armar una ruta comercial eficiente, equilibrando valor, riesgo y demanda.",
+        prompt:
+          "Elegí 3 recursos para comerciar con el Mediterráneo. Tu objetivo es superar un valor de intercambio de 22 puntos sin exceder el riesgo total de 10.",
+        resources: [
+          { id:"purpura", name:"Tinte púrpura", value:10, risk:4, desc:"Muy valioso y prestigioso" },
+          { id:"cedro", name:"Madera de cedro", value:7, risk:2, desc:"Útil para barcos y templos" },
+          { id:"vidrio", name:"Vidrio artesanal", value:8, risk:3, desc:"Producto de lujo" },
+          { id:"grano", name:"Grano", value:5, risk:1, desc:"Menos prestigioso pero estable" }
+        ],
+        successRule(selected){
+          const sumValue = selected.reduce((a,b)=>a+b.value,0);
+          const sumRisk = selected.reduce((a,b)=>a+b.risk,0);
+          return selected.length===3 && sumValue >= 22 && sumRisk <= 10;
+        },
+        explanation:
+          "Fenicia prosperó por su capacidad de combinar navegación, artesanías valiosas y redes de intercambio. El éxito no depende de un solo producto, sino del equilibrio."
+      },
+
+      {
+        id: "grecia",
+        x: 690, y: 140,
+        icon: "🏺",
+        title: "Grecia clásica",
+        short: "Polis, debate y ciudadanía",
+        type: "symbols",
+        difficulty: 4,
+        reward: { coins: 55, knowledge: 42, energy: 1 },
+        lore: {
+          era: "c. 800 a.C. – 146 a.C.",
+          region: "Península griega y mar Egeo",
+          concept: "Polis, filosofía, teatro, debate público y ciudadanía"
+        },
+        intro:
+          "La reliquia griega está codificada en ideas. Para restaurarla, necesitás clasificar conceptos en la categoría correcta: política, pensamiento o cultura cívica.",
+        prompt:
+          "Arrastrá cada concepto a su columna correspondiente.",
+        columns: [
+          { id:"politica", title:"Política y gobierno" },
+          { id:"pensamiento", title:"Pensamiento y filosofía" },
+          { id:"cultura", title:"Cultura cívica y social" }
+        ],
+        items: [
+          { id:"i1", text:"Asamblea ciudadana", target:"politica" },
+          { id:"i2", text:"Búsqueda racional de explicaciones", target:"pensamiento" },
+          { id:"i3", text:"Teatro y festivales públicos", target:"cultura" },
+          { id:"i4", text:"Debate sobre leyes y poder", target:"politica" },
+          { id:"i5", text:"Escuelas filosóficas", target:"pensamiento" },
+          { id:"i6", text:"Participación cívica", target:"cultura" }
+        ],
+        explanation:
+          "La Grecia clásica no fue solo guerra o templos: combinó instituciones políticas, reflexión filosófica y una cultura pública intensa."
+      },
+
+      {
+        id: "roma",
+        x: 790, y: 360,
+        icon: "🦅",
+        title: "Roma",
+        short: "Ley, expansión y decisiones",
+        type: "decision",
+        difficulty: 5,
+        reward: { coins: 65, knowledge: 50, energy: 2 },
+        lore: {
+          era: "c. 753 a.C. – 476 d.C. (Occidente)",
+          region: "Península itálica y Mediterráneo",
+          concept: "Expansión, ciudadanía, derecho e infraestructura"
+        },
+        intro:
+          "Roma dejó una reliquia distinta: no pide recordar datos, sino gobernar. Vas a recibir un problema imperial y elegir la política más sostenible.",
+        prompt:
+          "Una provincia recién incorporada paga impuestos, pero está descontenta. ¿Qué medida fortalece más la estabilidad romana a mediano plazo?",
+        decisions: [
+          {
+            id:"d1",
+            title:"Aumentar la presión militar y duplicar tributos",
+            text:"Da control inmediato, pero puede disparar rebeliones y costos de ocupación.",
+            effect:{good:false}
+          },
+          {
+            id:"d2",
+            title:"Construir caminos, integrar élites locales y ampliar ciertos derechos",
+            text:"Cuesta más al principio, pero mejora comercio, administración y lealtad.",
+            effect:{good:true}
+          },
+          {
+            id:"d3",
+            title:"Abandonar la provincia y cortar la ruta comercial",
+            text:"Reduce conflicto inmediato, pero debilita el prestigio y la red imperial.",
+            effect:{good:false}
+          }
+        ],
+        correct:"d2",
+        explanation:
+          "Roma sostuvo su expansión no solo con legiones, sino con infraestructura, administración y distintos grados de integración de territorios y élites locales."
+      },
+
+      {
+        id: "maya",
+        x: 560, y: 500,
+        icon: "☀️",
+        title: "Mundo maya",
+        short: "Calendarios, observación y ciudades",
+        type: "hybrid",
+        difficulty: 6,
+        reward: { coins: 80, knowledge: 65, energy: 3 },
+        lore: {
+          era: "c. 2000 a.C. – siglo XVI (con etapas diversas)",
+          region: "Mesoamérica",
+          concept: "Astronomía, escritura, ciudades-estado y calendarios complejos"
+        },
+        intro:
+          "La última reliquia combina razonamiento, observación y síntesis. Si la resolvés, restaurás el Atlas completo.",
+        prompt:
+          "Elegí la afirmación más precisa sobre la civilización maya y luego justificá la estrategia del calendario seleccionando dos pistas correctas.",
+        phase1Options: [
+          "Fue una única ciudad centralizada que dominó toda Mesoamérica sin cambios.",
+          "Desarrolló escritura, observación astronómica y sistemas calendáricos sofisticados en múltiples ciudades-estado.",
+          "No dejó registros escritos ni arquitectura monumental.",
+          "Se limitó a intercambios locales y no desarrolló matemáticas."
+        ],
+        phase1Correct: 1,
+        clues: [
+          { id:"c1", text:"Observaban ciclos celestes con gran precisión", ok:true },
+          { id:"c2", text:"Usaban ciudades-estado sin ninguna religión", ok:false },
+          { id:"c3", text:"Relacionaban tiempo, ritual y poder político", ok:true },
+          { id:"c4", text:"Desconocían completamente el conteo del tiempo", ok:false }
+        ],
+        explanation:
+          "La civilización maya combinó escritura, arquitectura, astronomía, matemáticas y calendarios complejos. No fue una sola ciudad, sino una red diversa de centros urbanos y poderes."
+      }
+    ];
+
+    const connections = [
+      ["mesopotamia","egipto"],
+      ["egipto","fenicia"],
+      ["fenicia","grecia"],
+      ["grecia","roma"],
+      ["fenicia","maya"],
+      ["roma","maya"]
+    ];
+
+    /**********************************************************************
+     * UTILIDADES
+     **********************************************************************/
+    function deepClone(obj){
+      return JSON.parse(JSON.stringify(obj));
+    }
+
+    function saveGame(){
+      const data = {
+        ...state,
+        elapsedExtra: getPlayedMs()
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+
+    function loadGame(){
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return false;
+      try{
+        const data = JSON.parse(raw);
+        Object.assign(state, data);
+        state.startTime = Date.now();
+        return true;
+      }catch(e){
+        console.error(e);
+        return false;
+      }
+    }
+
+    function resetGame(){
+      localStorage.removeItem(STORAGE_KEY);
+      state.energy = 5;
+      state.coins = 0;
+      state.knowledge = 0;
+      state.level = 1;
+      state.completed = [];
+      state.currentMissionId = null;
+      state.totalAnswers = 0;
+      state.correctAnswers = 0;
+      state.streak = 0;
+      state.bestStreak = 0;
+      state.museumRank = "Inicial";
+      state.startTime = Date.now();
+      state.elapsedExtra = 0;
+      state.missionAttempts = {};
+      state.finishedGame = false;
+      updateHUD();
+      renderMap();
+      renderStats();
+      showScreen("screenHome");
+      setLog("Reiniciaste el Atlas. Todas las reliquias volvieron a fragmentarse.");
+      toast("Nuevo comienzo", "El progreso fue reiniciado.");
+      saveGame();
+    }
+
+    function getPlayedMs(){
+      return state.elapsedExtra + (Date.now() - state.startTime);
+    }
+
+    function formatPlayed(ms){
+      const totalSec = Math.floor(ms/1000);
+      const m = Math.floor(totalSec/60);
+      const h = Math.floor(m/60);
+      if(h>0) return `${h}h ${m%60}m`;
+      return `${m}m`;
+    }
+
+    function getAccuracy(){
+      if(state.totalAnswers===0) return 0;
+      return Math.round((state.correctAnswers / state.totalAnswers)*100);
+    }
+
+    function getMainProgress(){
+      return Math.round((state.completed.length / missions.length) * 100);
+    }
+
+    function getMissionById(id){
+      return missions.find(m => m.id === id);
+    }
+
+    function isUnlocked(mission){
+      const idx = missions.findIndex(m => m.id === mission.id);
+      if(idx===0) return true;
+      const prev = missions[idx-1];
+      if(state.completed.includes(mission.id)) return true;
+      return state.completed.includes(prev.id);
+    }
+
+    function setLog(text){
+      $("#logText").textContent = text;
+    }
+
+    function toast(title, text){
+      const wrap = $("#toastWrap");
+      const el = document.createElement("div");
+      el.className = "toast";
+      el.innerHTML = `<strong>${title}</strong><p>${text}</p>`;
+      wrap.appendChild(el);
+      setTimeout(()=>{ el.style.opacity = "0"; el.style.transform = "translateY(10px)"; }, 3600);
+      setTimeout(()=> el.remove(), 4100);
+    }
+
+    function showModal(title, html){
+      $("#modalTitle").textContent = title;
+      $("#modalBody").innerHTML = html;
+      $("#modal").classList.add("active");
+    }
+
+    function closeModal(){
+      $("#modal").classList.remove("active");
+    }
+
+    function showScreen(id){
+      $$(".screen").forEach(s => s.classList.remove("active"));
+      $("#" + id).classList.add("active");
+    }
+
+    function updateRank(){
+      const k = state.knowledge;
+      if(k >= 220) state.museumRank = "Legendario";
+      else if(k >= 150) state.museumRank = "Gran Curador";
+      else if(k >= 90) state.museumRank = "Curador Senior";
+      else if(k >= 40) state.museumRank = "Investigador";
+      else state.museumRank = "Inicial";
+      $("#badgeMuseum").textContent = state.museumRank;
+    }
+
+    function updateLevel(){
+      state.level = 1 + Math.floor(state.knowledge / 45);
+    }
+
+    function updateHUD(){
+      $("#hudEnergy").textContent = state.energy;
+      $("#hudCoins").textContent = state.coins;
+      $("#hudKnowledge").textContent = state.knowledge;
+      $("#hudLevel").textContent = state.level;
+    }
+
+    function renderStats(){
+      $("#statCompleted").textContent = `${state.completed.length}/${missions.length}`;
+      $("#statAccuracy").textContent = `${getAccuracy()}%`;
+      $("#statStreak").textContent = state.bestStreak;
+      $("#statTime").textContent = formatPlayed(getPlayedMs());
+      const prog = getMainProgress();
+      $("#badgeMainProgress").textContent = `${prog}%`;
+      $("#mainProgressBar").style.width = prog + "%";
+      updateRank();
+      updateLevel();
+      updateHUD();
+    }
+
+    function rewardPlayer(reward){
+      state.coins += reward.coins || 0;
+      state.knowledge += reward.knowledge || 0;
+      state.energy += reward.energy || 0;
+      updateLevel();
+      updateRank();
+      updateHUD();
+      renderStats();
+    }
+
+    function consumeEnergy(amount=1){
+      if(state.energy < amount) return false;
+      state.energy -= amount;
+      updateHUD();
+      return true;
+    }
+
+    function completeMission(id, reward, extraMessage=""){
+      if(!state.completed.includes(id)){
+        state.completed.push(id);
+        rewardPlayer(reward);
+      }
+      state.currentMissionId = null;
+      renderMap();
+      renderStats();
+
+      const mission = getMissionById(id);
+      const msg = extraMessage || `Restauraste la reliquia de ${mission.title}.`;
+      setLog(msg);
+      toast("Reliquia restaurada", `${mission.title} fue completada. Ganaste conocimiento y monedas.`);
+      saveGame();
+
+      if(state.completed.length === missions.length){
+        state.finishedGame = true;
+        renderFinal();
+        showScreen("screenFinal");
+      }else{
+        showScreen("screenMap");
+      }
+    }
+
+    /**********************************************************************
+     * RENDER DEL MAPA
+     **********************************************************************/
+    function renderMap(){
+      const board = $("#mapBoard");
+      board.querySelectorAll(".node").forEach(n => n.remove());
+
+      const linesGroup = $("#mapLines");
+      linesGroup.innerHTML = "";
+
+      connections.forEach(([a,b])=>{
+        const ma = getMissionById(a);
+        const mb = getMissionById(b);
+        const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        line.setAttribute("x1", ma.x);
+        line.setAttribute("y1", ma.y);
+        line.setAttribute("x2", mb.x);
+        line.setAttribute("y2", mb.y);
+        line.setAttribute("stroke", "rgba(255,255,255,.18)");
+        line.setAttribute("stroke-width", "3");
+        line.setAttribute("stroke-dasharray", "8 10");
+        linesGroup.appendChild(line);
+      });
+
+      missions.forEach((mission)=>{
+        const unlocked = isUnlocked(mission);
+        const done = state.completed.includes(mission.id);
+
+        const node = document.createElement("div");
+        node.className = "node";
+        if(!unlocked && !done) node.classList.add("locked");
+        if(done) node.classList.add("done");
+        node.style.left = mission.x + "px";
+        node.style.top = mission.y + "px";
+
+        node.innerHTML = `
+          <div class="icon">${mission.icon}</div>
+          <div class="title">${mission.title}</div>
+          <div class="mini">${done ? "Completada" : unlocked ? "Disponible" : "Bloqueada"}</div>
+        `;
+
+        node.addEventListener("click", ()=>{
+          if(!unlocked && !done){
+            toast("Nodo bloqueado", "Primero completá la reliquia anterior del camino principal.");
+            return;
+          }
+          openMission(mission.id);
+        });
+
+        board.appendChild(node);
+      });
+    }
+
+    /**********************************************************************
+     * APERTURA DE MISIONES
+     **********************************************************************/
+    function openMission(id){
+      const mission = getMissionById(id);
+      state.currentMissionId = id;
+      state.missionAttempts[id] = (state.missionAttempts[id] || 0) + 1;
+
+      showScreen("screenMission");
+      renderMission(mission);
+      saveGame();
+    }
+
+    function renderMission(mission){
+      const container = $("#missionContainer");
+
+      let html = `
+        <div class="mission-header">
+          <div class="mission-title">
+            <h2>${mission.icon} ${mission.title}</h2>
+            <p>${mission.intro}</p>
+          </div>
+          <div class="small-actions">
+            <button class="secondary" id="btnMissionBackMap">Volver al mapa</button>
+            <button class="secondary" id="btnMissionLore">Ver contexto</button>
+          </div>
+        </div>
+
+        <div class="info-cards">
+          <div class="info-card">
+            <h3>Época</h3>
+            <p>${mission.lore.era}</p>
+          </div>
+          <div class="info-card">
+            <h3>Región</h3>
+            <p>${mission.lore.region}</p>
+          </div>
+          <div class="info-card">
+            <h3>Clave histórica</h3>
+            <p>${mission.lore.concept}</p>
+          </div>
+        </div>
+
+        <div class="challenge-box">
+          <h3>Desafío: ${mission.short}</h3>
+          <p>${mission.prompt}</p>
+          <div id="missionPlayArea"></div>
+        </div>
+      `;
+
+      container.innerHTML = html;
+
+      $("#btnMissionBackMap").onclick = ()=> showScreen("screenMap");
+      $("#btnMissionLore").onclick = ()=> openLoreForMission(mission);
+
+      const playArea = $("#missionPlayArea");
+
+      switch(mission.type){
+        case "choice":
+          renderChoiceMission(playArea, mission);
+          break;
+        case "timeline":
+          renderTimelineMission(playArea, mission);
+          break;
+        case "trade":
+          renderTradeMission(playArea, mission);
+          break;
+        case "symbols":
+          renderSymbolsMission(playArea, mission);
+          break;
+        case "decision":
+          renderDecisionMission(playArea, mission);
+          break;
+        case "hybrid":
+          renderHybridMission(playArea, mission);
+          break;
+      }
+    }
+
+    /**********************************************************************
+     * MISION 1 - CHOICE
+     **********************************************************************/
+    function renderChoiceMission(playArea, mission){
+      const wrap = document.createElement("div");
+      wrap.innerHTML = `
+        <div class="choices" id="choiceList"></div>
+        <div class="footer-actions">
+          <button class="secondary" id="btnExplainChoice" style="display:none">Ver explicación</button>
+        </div>
+      `;
+      playArea.appendChild(wrap);
+
+      const list = wrap.querySelector("#choiceList");
+      mission.options.forEach((opt, idx)=>{
+        const el = document.createElement("div");
+        el.className = "choice";
+        el.innerHTML = `<strong>Opción ${idx+1}</strong><p style="margin:8px 0 0; color:var(--muted)">${opt}</p>`;
+        el.addEventListener("click", ()=>{
+          const all = list.querySelectorAll(".choice");
+          all.forEach(c=>c.classList.add("disabled"));
+
+          state.totalAnswers++;
+          if(idx === mission.correct){
+            el.classList.add("correct");
+            state.correctAnswers++;
+            state.streak++;
+            state.bestStreak = Math.max(state.bestStreak, state.streak);
+            setLog("Identificaste la importancia de la escritura en Mesopotamia.");
+            completeMission(mission.id, mission.reward);
+          }else{
+            el.classList.add("wrong");
+            all[mission.correct].classList.add("correct");
+            state.streak = 0;
+            setLog("La respuesta no era correcta, pero el Atlas te muestra la pista verdadera.");
+            wrap.querySelector("#btnExplainChoice").style.display = "inline-flex";
+            saveGame();
+            renderStats();
+          }
+        });
+        list.appendChild(el);
+      });
+
+      wrap.querySelector("#btnExplainChoice").onclick = ()=>{
+        showModal(
+          "Explicación histórica",
+          `<p class="muted">${mission.explanation}</p>
+           <div class="small-actions"><button id="btnFinishChoiceWrong">Aceptar y completar misión</button></div>`
+        );
+        setTimeout(()=>{
+          const btn = $("#btnFinishChoiceWrong");
+          if(btn){
+            btn.onclick = ()=>{
+              closeModal();
+              completeMission(mission.id, {
+                coins: Math.floor(mission.reward.coins*0.6),
+                knowledge: Math.floor(mission.reward.knowledge*0.6),
+                energy: 0
+              }, "Completaste la reliquia con ayuda del archivo histórico.");
+            };
+          }
+        }, 30);
+      };
+    }
+
+    /**********************************************************************
+     * MISION 2 - TIMELINE
+     **********************************************************************/
+    function renderTimelineMission(playArea, mission){
+      const shuffled = deepClone(mission.timelineItems).sort(()=>Math.random()-0.5);
+
+      playArea.innerHTML = `
+        <div class="sort-area">
+          <div class="sort-column">
+            <h4>Eventos disponibles</h4>
+            <div class="draggables" id="dragPool"></div>
+          </div>
+          <div class="sort-column">
+            <h4>Línea temporal (arrastrá aquí en orden)</h4>
+            <div class="dropzone" id="timelineZone"></div>
+          </div>
+        </div>
+        <div class="footer-actions">
+          <button id="btnCheckTimeline">Comprobar orden</button>
+          <button class="secondary" id="btnResetTimeline">Reordenar</button>
+        </div>
+      `;
+
+      const pool = $("#dragPool");
+      const zone = $("#timelineZone");
+
+      shuffled.forEach(item=>{
+        const el = document.createElement("div");
+        el.className = "drag-item";
+        el.draggable = true;
+        el.dataset.id = item.id;
+        el.textContent = item.text;
+        pool.appendChild(el);
+      });
+
+      enableDragAndDrop(pool, zone);
+
+      $("#btnResetTimeline").onclick = ()=> renderTimelineMission(playArea, mission);
+
+      $("#btnCheckTimeline").onclick = ()=>{
+        const order = Array.from(zone.querySelectorAll(".drag-item")).map(i=>i.dataset.id);
+        if(order.length !== mission.correctOrder.length){
+          toast("Faltan eventos", "Arrastrá todos los eventos a la línea temporal.");
+          return;
+        }
+        state.totalAnswers++;
+
+        const ok = JSON.stringify(order) === JSON.stringify(mission.correctOrder);
+        if(ok){
+          state.correctAnswers++;
+          state.streak++;
+          state.bestStreak = Math.max(state.bestStreak, state.streak);
+          setLog("Restauraste la secuencia principal de la historia egipcia.");
+          completeMission(mission.id, mission.reward);
+        }else{
+          state.streak = 0;
+          renderStats();
+          saveGame();
+          showModal(
+            "Secuencia corregida",
+            `
+              <p class="muted">${mission.explanation}</p>
+              <div class="timeline">
+                ${mission.timelineItems.map((it,idx)=>`
+                  <div class="timeline-item">
+                    <strong>${idx+1}. ${mission.timelineItems.find(x=>x.id===mission.correctOrder[idx]).text}</strong>
+                  </div>
+                `).join("")}
+              </div>
+              <div class="small-actions" style="margin-top:16px">
+                <button id="btnFinishTimelineAssist">Aceptar y completar con ayuda</button>
+              </div>
+            `
+          );
+          setTimeout(()=>{
+            const btn = $("#btnFinishTimelineAssist");
+            if(btn){
+              btn.onclick = ()=>{
+                closeModal();
+                completeMission(mission.id, {
+                  coins: Math.floor(mission.reward.coins*0.65),
+                  knowledge: Math.floor(mission.reward.knowledge*0.65),
+                  energy: 0
+                }, "La reliquia egipcia fue restaurada con apoyo del archivo.");
+              };
+            }
+          }, 30);
+        }
+      };
+    }
+
+    function enableDragAndDrop(pool, zone){
+      let dragged = null;
+
+      function attachDrag(el){
+        el.addEventListener("dragstart", ()=>{
+          dragged = el;
+          setTimeout(()=> el.style.opacity = ".5", 0);
+        });
+        el.addEventListener("dragend", ()=>{
+          el.style.opacity = "1";
+          dragged = null;
+        });
+      }
+
+      [...pool.querySelectorAll(".drag-item"), ...zone.querySelectorAll(".drag-item")].forEach(attachDrag);
+
+      [pool, zone].forEach(target=>{
+        target.addEventListener("dragover", (e)=>{
+          e.preventDefault();
+        });
+        target.addEventListener("drop", (e)=>{
+          e.preventDefault();
+          if(!dragged) return;
+          target.appendChild(dragged);
+          attachDrag(dragged);
+        });
+      });
+    }
+
+    /**********************************************************************
+     * MISION 3 - TRADE
+     **********************************************************************/
+    function renderTradeMission(playArea, mission){
+      let selected = [];
+
+      playArea.innerHTML = `
+        <p class="muted">
+          Seleccioná exactamente <strong>3 recursos</strong>. Cada uno tiene valor y riesgo.
+          Necesitás una combinación que represente una estrategia comercial viable.
+        </p>
+
+        <div class="resource-grid" id="resourceGrid"></div>
+
+        <div class="trade-board">
+          <div class="trade-side">
+            <h4>Valor total del intercambio</h4>
+            <div class="meter"><div id="valueMeter"></div></div>
+            <p class="muted" id="valueText" style="margin-top:10px">0 / 22 o más</p>
+          </div>
+          <div class="trade-side">
+            <h4>Riesgo acumulado</h4>
+            <div class="meter"><div id="riskMeter"></div></div>
+            <p class="muted" id="riskText" style="margin-top:10px">0 / máximo 10</p>
+          </div>
+        </div>
+
+        <div class="footer-actions">
+          <button id="btnCheckTrade">Validar ruta comercial</button>
+          <button class="secondary" id="btnClearTrade">Limpiar selección</button>
+        </div>
+      `;
+
+      const grid = $("#resourceGrid");
+
+      function renderResources(){
+        grid.innerHTML = "";
+        mission.resources.forEach(r=>{
+          const active = selected.some(s=>s.id===r.id);
+          const el = document.createElement("div");
+          el.className = "resource" + (active ? " active" : "");
+          el.innerHTML = `
+            <strong>${r.name}</strong>
+            <small>Valor: ${r.value} · Riesgo: ${r.risk}</small>
+            <p style="margin:8px 0 0; color:var(--muted)">${r.desc}</p>
+          `;
+          el.onclick = ()=>{
+            const exists = selected.some(s=>s.id===r.id);
+            if(exists){
+              selected = selected.filter(s=>s.id!==r.id);
+            }else{
+              if(selected.length>=3){
+                toast("Límite alcanzado", "Solo podés elegir 3 recursos.");
+                return;
+              }
+              selected.push(r);
+            }
+            renderResources();
+            updateMeters();
+          };
+          grid.appendChild(el);
+        });
+      }
+
+      function updateMeters(){
+        const value = selected.reduce((a,b)=>a+b.value,0);
+        const risk = selected.reduce((a,b)=>a+b.risk,0);
+        $("#valueMeter").style.width = Math.min(100, (value/22)*100) + "%";
+        $("#riskMeter").style.width = Math.min(100, (risk/10)*100) + "%";
+        $("#valueText").textContent = `${value} / 22 o más`;
+        $("#riskText").textContent = `${risk} / máximo 10`;
+      }
+
+      renderResources();
+      updateMeters();
+
+      $("#btnClearTrade").onclick = ()=>{
+        selected = [];
+        renderResources();
+        updateMeters();
+      };
+
+      $("#btnCheckTrade").onclick = ()=>{
+        if(selected.length!==3){
+          toast("Selección incompleta", "Tenés que elegir exactamente 3 recursos.");
+          return;
+        }
+
+        state.totalAnswers++;
+        const ok = mission.successRule(selected);
+
+        if(ok){
+          state.correctAnswers++;
+          state.streak++;
+          state.bestStreak = Math.max(state.bestStreak, state.streak);
+          setLog("Diseñaste una ruta comercial fenicia equilibrada y rentable.");
+          completeMission(mission.id, mission.reward);
+        }else{
+          state.streak = 0;
+          renderStats();
+          saveGame();
+
+          const value = selected.reduce((a,b)=>a+b.value,0);
+          const risk = selected.reduce((a,b)=>a+b.risk,0);
+
+          showModal(
+            "Análisis de la ruta",
+            `
+              <p class="muted">
+                Tu combinación obtuvo <strong>${value}</strong> de valor y <strong>${risk}</strong> de riesgo.
+                Para esta reliquia necesitabas una estrategia con valor <strong>igual o superior a 22</strong>
+                y riesgo <strong>no mayor a 10</strong>.
+              </p>
+              <p class="muted">${mission.explanation}</p>
+              <div class="small-actions">
+                <button id="btnFinishTradeAssist">Aceptar y restaurar con ayuda</button>
+              </div>
+            `
+          );
+
+          setTimeout(()=>{
+            const btn = $("#btnFinishTradeAssist");
+            if(btn){
+              btn.onclick = ()=>{
+                closeModal();
+                completeMission(mission.id, {
+                  coins: Math.floor(mission.reward.coins*0.7),
+                  knowledge: Math.floor(mission.reward.knowledge*0.7),
+                  energy: 0
+                }, "La reliquia fenicia fue restaurada tras revisar la lógica comercial.");
+              };
+            }
+          }, 30);
+        }
+      };
+    }
+
+    /**********************************************************************
+     * MISION 4 - SYMBOLS / CLASIFICACION
+     **********************************************************************/
+    function renderSymbolsMission(playArea, mission){
+      const items = deepClone(mission.items).sort(()=>Math.random()-0.5);
+
+      playArea.innerHTML = `
+        <div class="sort-area">
+          <div class="sort-column">
+            <h4>Conceptos por clasificar</h4>
+            <div class="draggables" id="symbolPool"></div>
+          </div>
+          <div class="sort-column">
+            <h4>Columnas de clasificación</h4>
+            <div style="display:grid; gap:12px" id="symbolColumns"></div>
+          </div>
+        </div>
+        <div class="footer-actions">
+          <button id="btnCheckSymbols">Comprobar clasificación</button>
+          <button class="secondary" id="btnResetSymbols">Reiniciar</button>
+        </div>
+      `;
+
+      const pool = $("#symbolPool");
+      const cols = $("#symbolColumns");
+
+      items.forEach(item=>{
+        const el = document.createElement("div");
+        el.className = "drag-item";
+        el.draggable = true;
+        el.dataset.id = item.id;
+        el.dataset.target = item.target;
+        el.textContent = item.text;
+        pool.appendChild(el);
+      });
+
+      mission.columns.forEach(col=>{
+        const wrap = document.createElement("div");
+        wrap.innerHTML = `
+          <div class="dropzone" data-col="${col.id}" style="min-height:90px">
+            <div style="width:100%; color:var(--gold2); font-weight:800; margin-bottom:4px">${col.title}</div>
+          </div>
+        `;
+        cols.appendChild(wrap);
+      });
+
+      enableMultiDrop(pool, cols);
+
+      $("#btnResetSymbols").onclick = ()=> renderSymbolsMission(playArea, mission);
+
+      $("#btnCheckSymbols").onclick = ()=>{
+        const zones = Array.from(cols.querySelectorAll(".dropzone"));
+        let placed = 0;
+        let correct = 0;
+
+        zones.forEach(zone=>{
+          const col = zone.dataset.col;
+          const items = Array.from(zone.querySelectorAll(".drag-item"));
+          placed += items.length;
+          items.forEach(it=>{
+            if(it.dataset.target === col) correct++;
+          });
+        });
+
+        if(placed !== mission.items.length){
+          toast("Faltan conceptos", "Tenés que clasificar todos los conceptos.");
+          return;
+        }
+
+        state.totalAnswers++;
+
+        if(correct === mission.items.length){
+          state.correctAnswers++;
+          state.streak++;
+          state.bestStreak = Math.max(state.bestStreak, state.streak);
+          setLog("Clasificaste correctamente la estructura cultural y política griega.");
+          completeMission(mission.id, mission.reward);
+        }else{
+          state.streak = 0;
+          renderStats();
+          saveGame();
+
+          showModal(
+            "Clasificación revisada",
+            `
+              <p class="muted">Ubicaste correctamente <strong>${correct}</strong> de <strong>${mission.items.length}</strong> conceptos.</p>
+              <p class="muted">${mission.explanation}</p>
+              <div class="small-actions">
+                <button id="btnFinishSymbolsAssist">Aceptar y completar con guía</button>
+              </div>
+            `
+          );
+
+          setTimeout(()=>{
+            const btn = $("#btnFinishSymbolsAssist");
+            if(btn){
+              btn.onclick = ()=>{
+                closeModal();
+                completeMission(mission.id, {
+                  coins: Math.floor(mission.reward.coins*0.68),
+                  knowledge: Math.floor(mission.reward.knowledge*0.68),
+                  energy: 0
+                }, "La reliquia griega fue restaurada tras reorganizar los conceptos.");
+              };
+            }
+          }, 30);
+        }
+      };
+    }
+
+    function enableMultiDrop(pool, colsContainer){
+      let dragged = null;
+
+      function attachDrag(el){
+        el.addEventListener("dragstart", ()=>{
+          dragged = el;
+          setTimeout(()=> el.style.opacity = ".5", 0);
+        });
+        el.addEventListener("dragend", ()=>{
+          el.style.opacity = "1";
+          dragged = null;
+        });
+      }
+
+      const zones = [
+        pool,
+        ...Array.from(colsContainer.querySelectorAll(".dropzone"))
+      ];
+
+      zones.forEach(z=>{
+        z.addEventListener("dragover", (e)=>e.preventDefault());
+        z.addEventListener("drop", (e)=>{
+          e.preventDefault();
+          if(!dragged) return;
+          z.appendChild(dragged);
+          attachDrag(dragged);
+        });
+      });
+
+      Array.from(pool.querySelectorAll(".drag-item")).forEach(attachDrag);
+    }
+
+    /**********************************************************************
+     * MISION 5 - DECISION
+     **********************************************************************/
+    function renderDecisionMission(playArea, mission){
+      playArea.innerHTML = `
+        <div class="decision-cards" id="decisionCards"></div>
+      `;
+
+      const wrap = $("#decisionCards");
+
+      mission.decisions.forEach(dec=>{
+        const el = document.createElement("div");
+        el.className = "decision";
+        el.innerHTML = `
+          <h4>${dec.title}</h4>
+          <p>${dec.text}</p>
+        `;
+        el.onclick = ()=>{
+          state.totalAnswers++;
+
+          if(dec.id === mission.correct){
+            state.correctAnswers++;
+            state.streak++;
+            state.bestStreak = Math.max(state.bestStreak, state.streak);
+            setLog("Tomaste una decisión de integración propia de una lógica imperial romana más sostenible.");
+            completeMission(mission.id, mission.reward);
+          }else{
+            state.streak = 0;
+            renderStats();
+            saveGame();
+
+            showModal(
+              "Decisión estratégica",
+              `
+                <p class="muted">${mission.explanation}</p>
+                <div class="small-actions">
+                  <button id="btnFinishDecisionAssist">Entendido, completar misión</button>
+                </div>
+              `
+            );
+
+            setTimeout(()=>{
+              const btn = $("#btnFinishDecisionAssist");
+              if(btn){
+                btn.onclick = ()=>{
+                  closeModal();
+                  completeMission(mission.id, {
+                    coins: Math.floor(mission.reward.coins*0.7),
+                    knowledge: Math.floor(mission.reward.knowledge*0.7),
+                    energy: 0
+                  }, "La reliquia romana fue restaurada tras analizar la política imperial.");
+                };
+              }
+            }, 30);
+          }
+        };
+        wrap.appendChild(el);
+      });
+    }
+
+    /**********************************************************************
+     * MISION 6 - HYBRID
+     **********************************************************************/
+    function renderHybridMission(playArea, mission){
+      let phase1Done = false;
+      let phase1Correct = false;
+      let selectedClues = [];
+
+      playArea.innerHTML = `
+        <div id="hybridPhase1">
+          <h3 style="margin-top:0">Fase 1: elegir la descripción correcta</h3>
+          <div class="choices" id="hybridChoices"></div>
+        </div>
+
+        <div id="hybridPhase2" style="display:none; margin-top:18px">
+          <h3>Fase 2: seleccionar 2 pistas correctas</h3>
+          <p class="muted">
+            Marcá las dos pistas que mejor explican por qué el tiempo y la observación eran centrales en el mundo maya.
+          </p>
+          <div class="resource-grid" id="clueGrid"></div>
+          <div class="footer-actions">
+            <button id="btnCheckHybrid">Restaurar reliquia final</button>
+          </div>
+        </div>
+      `;
+
+      const choiceWrap = $("#hybridChoices");
+      mission.phase1Options.forEach((opt, idx)=>{
+        const el = document.createElement("div");
+        el.className = "choice";
+        el.innerHTML = `<strong>Opción ${idx+1}</strong><p style="margin:8px 0 0; color:var(--muted)">${opt}</p>`;
+        el.onclick = ()=>{
+          if(phase1Done) return;
+          phase1Done = true;
+          state.totalAnswers++;
+
+          if(idx === mission.phase1Correct){
+            phase1Correct = true;
+            state.correctAnswers++;
+            state.streak++;
+            state.bestStreak = Math.max(state.bestStreak, state.streak);
+            el.classList.add("correct");
+            setLog("Identificaste correctamente la base cultural del mundo maya.");
+          }else{
+            phase1Correct = false;
+            state.streak = 0;
+            el.classList.add("wrong");
+            choiceWrap.children[mission.phase1Correct].classList.add("correct");
+            setLog("La primera interpretación no era la más precisa, pero seguís con la reliquia.");
+          }
+
+          Array.from(choiceWrap.children).forEach(c=>c.classList.add("disabled"));
+          $("#hybridPhase2").style.display = "block";
+          renderStats();
+          saveGame();
+          renderClues();
+        };
+        choiceWrap.appendChild(el);
+      });
+
+      function renderClues(){
+        const grid = $("#clueGrid");
+        grid.innerHTML = "";
+        mission.clues.forEach(clue=>{
+          const active = selectedClues.some(c=>c.id===clue.id);
+          const el = document.createElement("div");
+          el.className = "resource" + (active ? " active" : "");
+          el.innerHTML = `
+            <strong>Pista</strong>
+            <small>${clue.text}</small>
+          `;
+          el.onclick = ()=>{
+            const exists = selectedClues.some(c=>c.id===clue.id);
+            if(exists){
+              selectedClues = selectedClues.filter(c=>c.id!==clue.id);
+            }else{
+              if(selectedClues.length>=2){
+                toast("Máximo alcanzado", "Tenés que elegir exactamente 2 pistas.");
+                return;
+              }
+              selectedClues.push(clue);
+            }
+            renderClues();
+          };
+          grid.appendChild(el);
+        });
+      }
+
+      $("#btnCheckHybrid").onclick = ()=>{
+        if(!phase1Done){
+          toast("Falta la fase 1", "Primero elegí la descripción correcta.");
+          return;
+        }
+        if(selectedClues.length!==2){
+          toast("Selección incompleta", "Elegí exactamente 2 pistas.");
+          return;
+        }
+
+        state.totalAnswers++;
+
+        const cluesCorrect = selectedClues.every(c=>c.ok) && selectedClues.length===2;
+        const fullyCorrect = phase1Correct && cluesCorrect;
+
+        if(fullyCorrect){
+          state.correctAnswers += 1;
+          state.streak++;
+          state.bestStreak = Math.max(state.bestStreak, state.streak);
+          setLog("Completaste la reliquia final del mundo maya y restauraste el Atlas.");
+          completeMission(mission.id, mission.reward);
+        }else{
+          state.streak = 0;
+          renderStats();
+          saveGame();
+
+          showModal(
+            "Síntesis final del Atlas",
+            `
+              <p class="muted">${mission.explanation}</p>
+              <p class="muted">
+                La fase final combinaba dos ideas:
+                <strong>identificar una civilización compleja y diversa</strong> y
+                <strong>relacionar observación astronómica con organización del tiempo y del poder</strong>.
+              </p>
+              <div class="small-actions">
+                <button id="btnFinishHybridAssist">Restaurar Atlas con ayuda final</button>
+              </div>
+            `
+          );
+
+          setTimeout(()=>{
+            const btn = $("#btnFinishHybridAssist");
+            if(btn){
+              btn.onclick = ()=>{
+                closeModal();
+                completeMission(mission.id, {
+                  coins: Math.floor(mission.reward.coins*0.72),
+                  knowledge: Math.floor(mission.reward.knowledge*0.72),
+                  energy: 0
+                }, "Restauraste la reliquia final y completaste el Atlas.");
+              };
+            }
+          }, 30);
+        }
+      };
+    }
+
+    /**********************************************************************
+     * LORE / AYUDA / FINAL
+     **********************************************************************/
+    function openLoreForMission(mission){
+      showModal(
+        `Contexto: ${mission.title}`,
+        `
+          <p class="muted"><strong>Época:</strong> ${mission.lore.era}</p>
+          <p class="muted"><strong>Región:</strong> ${mission.lore.region}</p>
+          <p class="muted"><strong>Idea central:</strong> ${mission.lore.concept}</p>
+          <p class="muted">${mission.explanation}</p>
+        `
+      );
+    }
+
+    function openGlobalLore(){
+      const html = `
+        <p class="muted">
+          <strong>Atlas de Civilizaciones Perdidas</strong> está pensado como una mezcla entre
+          juego de exploración y museo interactivo. Cada reliquia representa una forma distinta
+          de aprender:
+        </p>
+        <div class="timeline">
+          <div class="timeline-item"><strong>Mesopotamia:</strong> entender cómo una innovación cambia la organización social.</div>
+          <div class="timeline-item"><strong>Egipto:</strong> ordenar procesos históricos y ver relaciones entre poder, religión y territorio.</div>
+          <div class="timeline-item"><strong>Fenicia:</strong> pensar el comercio como sistema y no como dato aislado.</div>
+          <div class="timeline-item"><strong>Grecia:</strong> clasificar ideas para comprender estructuras culturales y políticas.</div>
+          <div class="timeline-item"><strong>Roma:</strong> tomar decisiones estratégicas con consecuencias.</div>
+          <div class="timeline-item"><strong>Mundo maya:</strong> integrar conocimiento, observación y síntesis.</div>
+        </div>
+      `;
+      showModal("Lore del Atlas", html);
+    }
+
+    function openHelp(){
+      const html = `
+        <p class="muted">
+          El objetivo es restaurar las seis reliquias del Atlas. Cada misión te pide algo distinto:
+          responder, ordenar, arrastrar, elegir recursos o tomar decisiones.
+        </p>
+        <div class="timeline">
+          <div class="timeline-item"><strong>Energía:</strong> representa tu capacidad de exploración. Las misiones te pueden devolver energía.</div>
+          <div class="timeline-item"><strong>Monedas:</strong> simbolizan recursos del museo.</div>
+          <div class="timeline-item"><strong>Conocimiento:</strong> determina tu nivel y prestigio.</div>
+          <div class="timeline-item"><strong>Precisión:</strong> mide cuántas respuestas resolviste correctamente sin ayuda.</div>
+          <div class="timeline-item"><strong>Si fallás:</strong> el juego igual te enseña y te deja completar la reliquia con una recompensa menor.</div>
+        </div>
+      `;
+      showModal("Cómo jugar", html);
+    }
+
+    function renderFinal(){
+      const score =
+        state.knowledge * 2 +
+        state.coins +
+        getAccuracy() * 4 +
+        state.bestStreak * 6;
+
+      $("#finalScore").textContent = score;
+      const deg = Math.min(360, Math.round((score / 900) * 360));
+      $("#scoreRing").style.setProperty("--deg", deg + "deg");
+
+      let verdict = "";
+      if(score >= 700){
+        verdict = "Sos un Curador Legendario. Restauraste el Atlas con una mezcla excelente de precisión, análisis y consistencia.";
+      }else if(score >= 500){
+        verdict = "Gran trabajo. Tu museo recuperó una parte enorme del conocimiento perdido y tu campaña fue muy sólida.";
+      }else{
+        verdict = "Restauraste el Atlas y aprendiste a pensar la historia como un sistema de decisiones, símbolos y procesos.";
+      }
+
+      $("#finalSummary").textContent =
+        `${verdict} Completaste ${state.completed.length}/${missions.length} reliquias con una precisión del ${getAccuracy()}%.`;
+    }
+
+    /**********************************************************************
+     * MISION ALEATORIA
+     **********************************************************************/
+    function openRandomMission(){
+      const unlocked = missions.filter(m => isUnlocked(m) || state.completed.includes(m.id));
+      const notDone = unlocked.filter(m => !state.completed.includes(m.id));
+      const pool = notDone.length ? notDone : unlocked;
+      const chosen = pool[Math.floor(Math.random()*pool.length)];
+      if(chosen) openMission(chosen.id);
+    }
+
+    /**********************************************************************
+     * EVENTOS UI
+     **********************************************************************/
+    $("#btnStart").onclick = ()=>{
+      showScreen("screenMap");
+      setLog("La expedición comenzó. Elegí una reliquia para restaurar.");
+      toast("Expedición iniciada", "Ya podés empezar a reconstruir el Atlas.");
+    };
+
+    $("#btnReset").onclick = ()=>{
+      const ok = confirm("¿Seguro que querés borrar todo tu progreso?");
+      if(ok) resetGame();
+    };
+
+    $("#btnGoMap").onclick = ()=> showScreen("screenMap");
+    $("#btnBackHome").onclick = ()=> showScreen("screenHome");
+    $("#btnQuickMission").onclick = openRandomMission;
+    $("#btnRandomMapMission").onclick = openRandomMission;
+    $("#btnOpenLore").onclick = openGlobalLore;
+    $("#btnOpenHelp").onclick = openHelp;
+    $("#btnCloseModal").onclick = closeModal;
+    $("#btnReplay").onclick = resetGame;
+    $("#btnBackMapFromFinal").onclick = ()=> showScreen("screenMap");
+
+    $("#modal").addEventListener("click", (e)=>{
+      if(e.target.id === "modal") closeModal();
+    });
+
+    /**********************************************************************
+     * INICIALIZACION
+     **********************************************************************/
+    function boot(){
+      const loaded = loadGame();
+      renderMap();
+      renderStats();
+
+      if(loaded){
+        setLog("Se restauró tu partida guardada del Atlas.");
+        if(state.finishedGame){
+          renderFinal();
+          showScreen("screenFinal");
+        }
+      }else{
+        saveGame();
+      }
+
+      setInterval(()=>{
+        renderStats();
+        saveGame();
+      }, 15000);
+    }
+
+    boot();
+  </script>
+</body>
+</html>
